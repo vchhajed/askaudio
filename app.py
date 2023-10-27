@@ -57,13 +57,13 @@ def text_to_speech(text):
 
     response = requests.post(url, json=data, headers=headers)
 
-    if os.path.exists('output.mp3'):
-        os.remove('output.mp3')
-    with open('output.mp3', 'wb') as f:
+    if os.path.exists('output.wav'):
+        os.remove('output.wav')
+    with open('output.wav', 'wb') as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
                 f.write(chunk)
-    if os.path.exists('output.mp3'):
+    if os.path.exists('output.wav'):
         print("file uploaded successfully!!!")
 
 
@@ -82,7 +82,7 @@ def transcribe_audio(audio_file):
 
 with st.sidebar:
     audio_file = "myfile.wav"
-    output_file = "output.mp3"
+    output_file = "output.wav"
     audio_bytes = audio_recorder(text="",
     recording_color="#e8b62c",
     neutral_color="#6aa36f",
@@ -137,11 +137,11 @@ else:
         
         print(full_response)
         text_to_speech(full_response)
-        if os.path.exists('output.mp3'):
-            audio_file = open('output.mp3', 'rb')
+        if os.path.exists('output.wav'):
+            audio_file = open('output.wav', 'rb')
             audio_bytes = audio_file.read()
             os.write(1,b'Something was executed.\n')
-            st.audio(audio_bytes, format='audio/mp3')
+            st.audio(audio_bytes, format='audio/wav')
         # play(audio)
         st.session_state.messages.append(
             {"role": "assistant", "content": full_response}
