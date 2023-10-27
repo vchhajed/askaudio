@@ -141,7 +141,7 @@ else:
             audio_file = open('output.mp3', 'rb')
             audio_bytes = audio_file.read()
             os.write(1,b'Something was executed.\n')
-            os.write(1,os.listdir())
+            os.write(1,f'{os.listdir()}')
             st.audio(audio_bytes, format='audio/mp3')
         # play(audio)
         st.session_state.messages.append(
