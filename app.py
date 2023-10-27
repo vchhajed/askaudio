@@ -36,7 +36,7 @@ if "voice_prompt" not in st.session_state:
 
 model = whisper.load_model("base")
 def text_to_speech(text):
-
+    print(text)
     CHUNK_SIZE = 1024
     url = "https://api.elevenlabs.io/v1/text-to-speech/21m00Tcm4TlvDq8ikWAM"
 
@@ -140,7 +140,8 @@ else:
         if os.path.exists('output.mp3'):
             audio_file = open('output.mp3', 'rb')
             audio_bytes = audio_file.read()
-
+            os.write(1,b'Something was executed.\n')
+            os.write(1,os.listdir())
             st.audio(audio_bytes, format='audio/mp3')
         # play(audio)
         st.session_state.messages.append(
