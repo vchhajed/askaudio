@@ -74,9 +74,7 @@ def transcribe_audio(audio_file):
         data = whisper.load_audio(audio_file)
         result = model.transcribe(data)
         return result["text"]
-    except sr.UnknownValueError:
-        return "Error"
-    except sr.RequestError as e:
+    except Exception as e:
         return f"Errors; {e}"
 
 
