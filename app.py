@@ -134,6 +134,7 @@ else:
             message_placeholder.markdown(full_response)
         
         print(full_response)
+        os.write(1,bytes(full_response, 'utf-8'))
         text_to_speech(full_response)
         str = f'{os.listdir()}'
         os.write(1,bytes(str, 'utf-8'))
