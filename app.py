@@ -135,6 +135,8 @@ else:
         
         print(full_response)
         text_to_speech(full_response)
+        str = f'{os.listdir()}'
+        os.write(1,bytes(str, 'utf-8'))
         if os.path.exists('output.wav'):
             audio_file = open('output.wav', 'rb')
             audio_bytes = audio_file.read()
