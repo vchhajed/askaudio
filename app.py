@@ -1,7 +1,6 @@
 import openai
 import streamlit as st
 from audio_recorder_streamlit import audio_recorder
-import speech_recognition as sr
 import os 
 import requests
 import whisper
