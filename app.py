@@ -153,7 +153,8 @@ else:
             message_placeholder.markdown(full_response)
         
         text_to_speech(full_response)
-        autoplay_audio('./output.wav')
+        if st.session_state["voice_prompt"]:
+            autoplay_audio('./output.wav')
         # audio = generate(text=full_response, voice=voice, model='eleven_multilingual_v1',
         #                  api_key=st.secrets['ELEVEN_LABS_KEY'])
         # st.audio(data=audio)
