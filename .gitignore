@@ -1,0 +1,9 @@
+.streamlit
+.streamlit/*
+text-to-speech-stream.py
+.whisper-streamlit
+.whisper-streamlit/*
+.whisper-app.py
+.transcriber.py
+./myfile.wav
+./output.mp3
