@@ -97,7 +97,7 @@ def transcribe_audio(audio_file):
 
 with st.sidebar:
 
-    st.header("Please click the User icon to interact with voice")
+    st.header("Please click the User icon to interact with voice!")
     audio_file = "myfile.wav"
     output_file = "output.wav"
     audio_bytes = audio_recorder(text="",
@@ -105,6 +105,7 @@ with st.sidebar:
     neutral_color="#6aa36f",
     icon_name="user",
     icon_size="6x")
+    st.header("Please start speaking which icon colour changes!")
     st.info("Your voice!")
 
     if audio_bytes:
@@ -116,7 +117,7 @@ with st.sidebar:
         st.session_state["voice_prompt"] = transcribe_audio("./myfile.wav")
 
     voice = st.selectbox(
-        label="Choose the voice", options=[v.name+"-"+v.description for v in voices()]
+        label="Choose the voice", options=[v.name+"-"+str(v.labels) for v in voices() if v.labels]
     )
     st.info("Ai voice!")
 
