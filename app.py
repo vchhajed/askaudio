@@ -4,7 +4,7 @@ from audio_recorder_streamlit import audio_recorder
 import os 
 import requests
 import whisper
-
+import base64
 # st.title("ChatGPT-like clone")
 # with st.expander("ℹ️ Disclaimer"):
 #     st.caption(
@@ -63,6 +63,20 @@ def text_to_speech(text):
                 f.write(chunk)
     if os.path.exists('output.wav'):
         os.write(1,b"file uploaded successfully!!!")
+
+def autoplay_audio(file_path: str):
+    with open(file_path, "rb") as f:
+        data = f.read()
+        b64 = base64.b64encode(data).decode()
+        md = f"""
+            <audio controls autoplay="true">
+            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            </audio>
+            """
+        st.markdown(
+            md,
+            unsafe_allow_html=True,
+        )
 
 
 # from transcriber import Transcription
@@ -136,6 +150,7 @@ else:
         print(full_response)
         os.write(1,bytes(full_response, 'utf-8'))
         text_to_speech(full_response)
+        autoplay_audio('./output.wav')
         str = f'{os.listdir()}'
         os.write(1,bytes(str, 'utf-8'))
         if os.path.exists('output.wav'):
