@@ -56,11 +56,11 @@ def text_to_speech(text):
     }
 
     response = requests.post(url, json=data, headers=headers)
-    st.audio(response, format="audio/wav")
-
+    
     with open('output.wav', 'wb') as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
+                print(chunk)
                 f.write(chunk)
     if os.path.exists('output.wav'):
         os.write(1,b"file uploaded successfully!!! \n")
@@ -151,15 +151,15 @@ else:
         print(full_response)
         text_to_speech(full_response)
         autoplay_audio('./output.wav')
-        str = f'{os.listdir()}'
-        str = f"{os.path.getsize('./output.wav')}"
-        os.write(1,bytes(str, 'utf-8'))
-        if os.path.exists('output.wav'):
-            audio_file = open('output.wav', 'rb')
-            audio_bytes = audio_file.read()
-            os.write(1,b'Something was executed.\n')
-            st.audio(audio_bytes, format='audio/wav')
-        # play(audio)
+        # str = f'{os.listdir()}'
+        # str = f"{os.path.getsize('./output.wav')}"
+        # os.write(1,bytes(str, 'utf-8'))
+        # if os.path.exists('output.wav'):
+        #     audio_file = open('output.wav', 'rb')
+        #     audio_bytes = audio_file.read()
+        #     os.write(1,b'Something was executed.\n')
+        #     st.audio(audio_bytes, format='audio/wav')
+        # # play(audio)
         st.session_state.messages.append(
             {"role": "assistant", "content": full_response}
         )
