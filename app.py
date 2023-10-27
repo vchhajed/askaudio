@@ -63,6 +63,8 @@ def text_to_speech(text):
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
                 f.write(chunk)
+    if os.path.exists('output.mp3'):
+        print("file uploaded successfully!!!")
 
 
 # from transcriber import Transcription
@@ -94,8 +96,12 @@ with st.sidebar:
             f.write(audio_bytes)
         st.session_state["voice_prompt"] = transcribe_audio("./myfile.wav")
 
-
-
+# system_message = {
+#             "role": "assistant",
+#             "content": "Welcome! I'm here to listen and support you. Please feel free to share your thoughts and emotions.",
+#         }
+# with st.chat_message("assistant"):
+#     st.markdown(system_message["content"])
 
 
 
@@ -107,21 +113,24 @@ if len(st.session_state.messages) >= max_messages:
         tutorial. Thank you for your understanding."""
     )
 
+
 else:
     if prompt := ( st.chat_input("What is up?") or st.session_state["voice_prompt"] ):
         st.session_state.messages.append({"role": "user", "content": prompt})
+
         with st.chat_message("user"):
             st.markdown(prompt)
 
         with st.chat_message("assistant"):
             message_placeholder = st.empty()
             full_response = ""
+            system_messages = [{"role": "system", "content": "You are a helpful and empathetic assistant."},
+            {"role": "system", "content": "Remember to be supportive and understanding."}, {"role": "system", "content": "Keep it short less than 100 words."}]
+            all_messages = [ {"role": m["role"], "content": m["content"]} for m in st.session_state.messages ]
+            all_messages.extend(system_messages)
             response = openai.ChatCompletion.create(
                 model=st.session_state["openai_model"],
-                messages=[
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages
-                ]
+                messages=all_messages
             )
             full_response = response.choices[0]['message']['content']
             message_placeholder.markdown(full_response)
