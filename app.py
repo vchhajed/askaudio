@@ -116,7 +116,7 @@ with st.sidebar:
         st.session_state["voice_prompt"] = transcribe_audio("./myfile.wav")
 
     voice = st.selectbox(
-        label="Choose the voice", options=[v.name+"-"+v.category for v in voices()]
+        label="Choose the voice", options=[v.name+"-"+v.description for v in voices()]
     )
     st.info("Ai voice!")
 
