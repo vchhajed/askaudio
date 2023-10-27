@@ -5,6 +5,7 @@ import os
 import requests
 import whisper
 import base64
+from elevenlabs import generate, play, voices
 # st.title("ChatGPT-like clone")
 # with st.expander("ℹ️ Disclaimer"):
 #     st.caption(
@@ -56,7 +57,7 @@ def text_to_speech(text):
     }
 
     response = requests.post(url, json=data, headers=headers)
-    
+
     with open('output.wav', 'wb') as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
@@ -101,6 +102,10 @@ with st.sidebar:
     neutral_color="#6aa36f",
     icon_name="user",
     icon_size="6x")
+
+    voice = st.selectbox(
+        label="Choose the voice", options=[v.name for v in voices()]
+    )
     if audio_bytes:
         st.audio(audio_bytes, format="audio/wav")
         if os.path.exists(audio_file):
@@ -108,13 +113,6 @@ with st.sidebar:
         with open(audio_file, mode='wb') as f:
             f.write(audio_bytes)
         st.session_state["voice_prompt"] = transcribe_audio("./myfile.wav")
-
-# system_message = {
-#             "role": "assistant",
-#             "content": "Welcome! I'm here to listen and support you. Please feel free to share your thoughts and emotions.",
-#         }
-# with st.chat_message("assistant"):
-#     st.markdown(system_message["content"])
 
 
 
@@ -151,15 +149,9 @@ else:
         print(full_response)
         text_to_speech(full_response)
         autoplay_audio('./output.wav')
-        # str = f'{os.listdir()}'
-        # str = f"{os.path.getsize('./output.wav')}"
-        # os.write(1,bytes(str, 'utf-8'))
-        # if os.path.exists('output.wav'):
-        #     audio_file = open('output.wav', 'rb')
-        #     audio_bytes = audio_file.read()
-        #     os.write(1,b'Something was executed.\n')
-        #     st.audio(audio_bytes, format='audio/wav')
-        # # play(audio)
+        audio = generate(text=full_response, voice=voice, model='eleven_multilingual_v1',
+                         api_key=st.secrets['ELEVEN_LABS_KEY'])
+        st.audio(data=audio)
         st.session_state.messages.append(
             {"role": "assistant", "content": full_response}
         )
