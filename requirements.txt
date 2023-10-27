@@ -1,4 +1,5 @@
 audio-recorder-streamlit
 streamlit
+ffmpeg-python
 openai
 git+https://github.com/openai/whisper.git
