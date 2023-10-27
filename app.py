@@ -57,14 +57,12 @@ def text_to_speech(text):
 
     response = requests.post(url, json=data, headers=headers)
 
-    if os.path.exists('output.wav'):
-        os.remove('output.wav')
     with open('output.wav', 'wb') as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
                 f.write(chunk)
     if os.path.exists('output.wav'):
-        print("file uploaded successfully!!!")
+        os.write(1,b"file uploaded successfully!!!")
 
 
 # from transcriber import Transcription
