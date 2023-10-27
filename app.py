@@ -60,10 +60,9 @@ def text_to_speech(text):
     with open('output.wav', 'wb') as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
-                os.write(1,b"Chunks adding!!!")
                 f.write(chunk)
     if os.path.exists('output.wav'):
-        os.write(1,b"file uploaded successfully!!!")
+        os.write(1,b"file uploaded successfully!!! \n")
 
 def autoplay_audio(file_path: str):
     with open(file_path, "rb") as f:
@@ -149,10 +148,10 @@ else:
             message_placeholder.markdown(full_response)
         
         print(full_response)
-        os.write(1,bytes(full_response, 'utf-8'))
         text_to_speech(full_response)
         autoplay_audio('./output.wav')
         str = f'{os.listdir()}'
+        str = f"{os.path.getsize('./output.wav')}"
         os.write(1,bytes(str, 'utf-8'))
         if os.path.exists('output.wav'):
             audio_file = open('output.wav', 'rb')
