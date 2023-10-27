@@ -56,6 +56,7 @@ def text_to_speech(text):
     }
 
     response = requests.post(url, json=data, headers=headers)
+    st.audio(response, format="audio/wav")
 
     with open('output.wav', 'wb') as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
@@ -70,7 +71,7 @@ def autoplay_audio(file_path: str):
         b64 = base64.b64encode(data).decode()
         md = f"""
             <audio controls autoplay="true">
-            <source src="data:audio/mp3;base64,{b64}" type="audio/mp3">
+            <source src="data:audio/wav;base64,{b64}" type="audio/wav">
             </audio>
             """
         st.markdown(
