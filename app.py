@@ -60,6 +60,7 @@ def text_to_speech(text):
     with open('output.wav', 'wb') as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
+                os.write(1,b"Chunks adding!!!")
                 f.write(chunk)
     if os.path.exists('output.wav'):
         os.write(1,b"file uploaded successfully!!!")
