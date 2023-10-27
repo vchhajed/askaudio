@@ -80,6 +80,7 @@ def autoplay_audio(file_path: str):
             md,
             unsafe_allow_html=True,
         )
+    st.session_state["voice_prompt"] = ""
 
 
 # from transcriber import Transcription
