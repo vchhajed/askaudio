@@ -6,12 +6,13 @@ import requests
 import whisper
 import base64
 from elevenlabs import generate, play, voices
-# st.title("ChatGPT-like clone")
+st.title("Mindframes.ai Chat ")
 # with st.expander("ℹ️ Disclaimer"):
 #     st.caption(
 #         "We appreciate your engagement! Please note, this demo is designed to process a maximum of 10 interactions. Thank you for your understanding."
 #     )
-
+if os.path.exists('output.wav'):
+    os.remove("output.wav")
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
 if "openai_model" not in st.session_state:
@@ -58,10 +59,10 @@ def text_to_speech(text):
 
     response = requests.post(url, json=data, headers=headers)
 
+
     with open('output.wav', 'wb') as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
-                print(chunk)
                 f.write(chunk)
     if os.path.exists('output.wav'):
         os.write(1,b"file uploaded successfully!!! \n")
@@ -75,7 +76,7 @@ def autoplay_audio(file_path: str):
             <source src="data:audio/wav;base64,{b64}" type="audio/wav">
             </audio>
             """
-        st.markdown(
+        st.sidebar.markdown(
             md,
             unsafe_allow_html=True,
         )
@@ -95,6 +96,8 @@ def transcribe_audio(audio_file):
 
 
 with st.sidebar:
+
+    st.header("Please click the User icon to interact with voice")
     audio_file = "myfile.wav"
     output_file = "output.wav"
     audio_bytes = audio_recorder(text="",
@@ -102,10 +105,8 @@ with st.sidebar:
     neutral_color="#6aa36f",
     icon_name="user",
     icon_size="6x")
+    st.info("Your voice!")
 
-    voice = st.selectbox(
-        label="Choose the voice", options=[v.name for v in voices()]
-    )
     if audio_bytes:
         st.audio(audio_bytes, format="audio/wav")
         if os.path.exists(audio_file):
@@ -114,6 +115,10 @@ with st.sidebar:
             f.write(audio_bytes)
         st.session_state["voice_prompt"] = transcribe_audio("./myfile.wav")
 
+    voice = st.selectbox(
+        label="Choose the voice", options=[v.name+"-"+v.category for v in voices()]
+    )
+    st.info("Ai voice!")
 
 
 if len(st.session_state.messages) >= max_messages:
@@ -146,12 +151,11 @@ else:
             full_response = response.choices[0]['message']['content']
             message_placeholder.markdown(full_response)
         
-        print(full_response)
         text_to_speech(full_response)
         autoplay_audio('./output.wav')
-        audio = generate(text=full_response, voice=voice, model='eleven_multilingual_v1',
-                         api_key=st.secrets['ELEVEN_LABS_KEY'])
-        st.audio(data=audio)
+        # audio = generate(text=full_response, voice=voice, model='eleven_multilingual_v1',
+        #                  api_key=st.secrets['ELEVEN_LABS_KEY'])
+        # st.audio(data=audio)
         st.session_state.messages.append(
             {"role": "assistant", "content": full_response}
         )
