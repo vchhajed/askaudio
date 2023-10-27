@@ -1,4 +1,3 @@
-from pydoc import text
 import openai
 import streamlit as st
 from audio_recorder_streamlit import audio_recorder
@@ -6,6 +5,12 @@ import speech_recognition as sr
 import os 
 import requests
 import whisper
+
+# st.title("ChatGPT-like clone")
+# with st.expander("ℹ️ Disclaimer"):
+#     st.caption(
+#         "We appreciate your engagement! Please note, this demo is designed to process a maximum of 10 interactions. Thank you for your understanding."
+#     )
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
@@ -39,7 +44,7 @@ def text_to_speech(text):
     headers = {
     "Accept": "audio/mpeg",
     "Content-Type": "application/json",
-    "xi-api-key": "2fb02cb025a7887e949fa7ab98bd0f43"
+    "xi-api-key": st.secrets["ELEVEN_LABS_KEY"]
     }
 
     data = {
@@ -93,11 +98,7 @@ with st.sidebar:
         st.session_state["voice_prompt"] = transcribe_audio("./myfile.wav")
 
 
-# st.title("ChatGPT-like clone")
-# with st.expander("ℹ️ Disclaimer"):
-#     st.caption(
-#         "We appreciate your engagement! Please note, this demo is designed to process a maximum of 10 interactions. Thank you for your understanding."
-#     )
+
 
 
 
